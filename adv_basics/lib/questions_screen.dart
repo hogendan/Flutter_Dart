@@ -19,7 +19,7 @@ class _QuestionScreenState extends State<QuestionsScreen> {
     return SizedBox(
       width: double.infinity,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             currentQuestion.text,
@@ -30,18 +30,9 @@ class _QuestionScreenState extends State<QuestionsScreen> {
           const SizedBox(
             height: 30,
           ),
-          AnswerButton(
-            answerText: 'Answer1',
-            onTap: () {},
-          ),
-          AnswerButton(
-            answerText: 'Answer2',
-            onTap: () {},
-          ),
-          AnswerButton(
-            answerText: 'Answer3',
-            onTap: () {},
-          ),
+          ...currentQuestion.answers.map((answer) {
+            return AnswerButton(answerText: answer, onTap: () {});
+          }),
         ],
       ),
     );
