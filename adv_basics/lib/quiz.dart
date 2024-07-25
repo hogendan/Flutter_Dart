@@ -1,3 +1,4 @@
+import 'package:adv_basics/data/questions.dart';
 import 'package:adv_basics/questions_screen.dart';
 import 'package:adv_basics/start_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ enum ScreenTypes {
 
 class _QuizState extends State<Quiz> {
   var activeScreen = ScreenTypes.startScreen;
-  final List<String> selectedAnswers = [];
+  List<String> selectedAnswers = [];
 
   void switchScreen() {
     setState(() {
@@ -29,6 +30,13 @@ class _QuizState extends State<Quiz> {
 
   void chooseAnswer(String answer) {
     selectedAnswers.add(answer);
+
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        selectedAnswers = [];
+        activeScreen = ScreenTypes.startScreen;
+      });
+    }
   }
 
   @override
