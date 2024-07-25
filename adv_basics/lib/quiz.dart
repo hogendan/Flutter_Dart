@@ -19,11 +19,16 @@ enum ScreenTypes {
 
 class _QuizState extends State<Quiz> {
   var activeScreen = ScreenTypes.startScreen;
+  final List<String> selectedAnswers = [];
 
   void switchScreen() {
     setState(() {
       activeScreen = ScreenTypes.questionsScreen;
     });
+  }
+
+  void chooseAnswer(String answer) {
+    selectedAnswers.add(answer);
   }
 
   @override
@@ -39,7 +44,9 @@ class _QuizState extends State<Quiz> {
           ),
           child: activeScreen == ScreenTypes.startScreen
               ? StartScreen(switchScreen)
-              : const QuestionsScreen(),
+              : QuestionsScreen(
+                  onSelectAnswer: chooseAnswer,
+                ),
         ),
       ),
     );
