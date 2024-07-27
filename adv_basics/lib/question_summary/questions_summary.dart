@@ -1,3 +1,4 @@
+import 'package:adv_basics/question_summary/question_identifier.dart';
 import 'package:flutter/material.dart';
 
 class QuestionsSummary extends StatelessWidget {
@@ -7,25 +8,18 @@ class QuestionsSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color getQuestionIndexColor(Map<String, Object> summaryData) {
-      if (summaryData['user_answer'] == summaryData['correct_answer']) {
-        return Colors.blue;
-      }
-      return Colors.red;
-    }
-
     return SizedBox(
       height: 300,
       child: SingleChildScrollView(
         child: Column(
           children: summaryData.map((data) {
             return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  style: TextStyle(
-                    color: getQuestionIndexColor(data),
-                  ),
-                  ((data['question_index'] as int) + 1).toString(),
+                QuestionIdentifier(
+                  questionIndex: data['question_index'] as int,
+                  isCorrectAnswer:
+                      data['user_answer'] == data['correct_answer'],
                 ),
                 const SizedBox(
                   width: 20,
