@@ -20,7 +20,7 @@ class ExpensesList extends StatelessWidget {
         key: ValueKey(expenses[index]),
         onDismissed: (direction) => onRemoveExpense(expenses[index]),
         background: Container(
-          color: Colors.red,
+          color: Theme.of(context).colorScheme.error,
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Align(
@@ -30,7 +30,7 @@ class ExpensesList extends StatelessWidget {
           ),
         ),
         secondaryBackground: Container(
-          color: Colors.red,
+          color: Theme.of(context).colorScheme.error,
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Align(
