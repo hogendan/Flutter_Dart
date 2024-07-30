@@ -55,6 +55,7 @@ void main() {
               ),
             ),
       ),
+      themeMode: ThemeMode.system,
       home: Expenses(),
     ),
   );
