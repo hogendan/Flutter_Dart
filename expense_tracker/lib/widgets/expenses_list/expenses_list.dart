@@ -21,6 +21,8 @@ class ExpensesList extends StatelessWidget {
         onDismissed: (direction) => onRemoveExpense(expenses[index]),
         background: Container(
           color: Theme.of(context).colorScheme.error,
+          margin: EdgeInsets.symmetric(
+              horizontal: Theme.of(context).cardTheme.margin!.horizontal),
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Align(
