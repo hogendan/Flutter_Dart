@@ -17,6 +17,15 @@ class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
   List<Meal> _favoriteMeals = [];
 
+  void _showInfoMessage(String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
@@ -28,11 +37,13 @@ class _TabsScreenState extends State<TabsScreen> {
       setState(() {
         _favoriteMeals.remove(meal);
       });
+      _showInfoMessage('Meal is no longer a favorite.');
       return;
     }
     setState(() {
       _favoriteMeals.add(meal);
     });
+    _showInfoMessage('Marked as favorite!');
   }
 
   @override
