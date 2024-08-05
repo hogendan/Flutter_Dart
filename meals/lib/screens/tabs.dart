@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/filters.dart';
@@ -17,7 +18,13 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
-  List<Meal> _favoriteMeals = [];
+  final List<Meal> _favoriteMeals = [];
+  Map<Filter, bool> _selectedFilters = {
+    Filter.glutenFree: false,
+    Filter.lactoseFree: false,
+    Filter.vegetarian: false,
+    Filter.vegan: false,
+  };
 
   void _showInfoMessage(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -48,25 +55,51 @@ class _TabsScreenState extends State<TabsScreen> {
     _showInfoMessage('Marked as favorite!');
   }
 
-  void _setScreen(String identifier) {
+  void _setScreen(String identifier) async {
     Navigator.of(context).pop(); // Drawer を閉じる
     if (identifier == 'filters') {
-      Navigator.of(context).push(
+      var result = await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => const FiltersScreen(),
+          builder: (ctx) => FiltersScreen(
+            currentFilter: _selectedFilters,
+          ),
         ),
       );
+      if (result == null) return;
+      setState(() {
+        _selectedFilters = result;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget activePage = CategoriesScreen(_toggleMealFavoriteStatus);
+    final availableMeals = dummyMeals.where((meal) {
+      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+        return false;
+      }
+      return true;
+    });
+
+    Widget activePage = CategoriesScreen(
+      _toggleMealFavoriteStatus,
+      availableMeals: availableMeals.toList(),
+    );
+
     var activePageTile = 'Categories';
 
     if (_selectedPageIndex == 1) {
       activePage = MealsScreen(
-        meals: _favoriteMeals,
+        meals: _favoriteMeals.toList(),
         onToggleFavorite: _toggleMealFavoriteStatus,
       );
       activePageTile = 'Your Favorites';
