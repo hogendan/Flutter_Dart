@@ -100,6 +100,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     var activePageTile = 'Categories';
 
     if (_selectedPageIndex == 1) {
+      final favoriteMeals = ref.watch(favoriteMealsProvider);
       activePage = MealsScreen(
         meals: _favoriteMeals.toList(),
         onToggleFavorite: _toggleMealFavoriteStatus,
