@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meals/models/meal.dart';
+import 'package:meals/providers/favorites_provider.dart';
 import 'package:meals/providers/meals_provider.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/filters.dart';
@@ -19,7 +19,6 @@ class TabsScreen extends ConsumerStatefulWidget {
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
-  final List<Meal> _favoriteMeals = [];
   Map<Filter, bool> _selectedFilters = {
     Filter.glutenFree: false,
     Filter.lactoseFree: false,
@@ -27,33 +26,10 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     Filter.vegan: false,
   };
 
-  void _showInfoMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
-
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
     });
-  }
-
-  void _toggleMealFavoriteStatus(Meal meal) {
-    if (_favoriteMeals.contains(meal)) {
-      setState(() {
-        _favoriteMeals.remove(meal);
-      });
-      _showInfoMessage('Meal is no longer a favorite.');
-      return;
-    }
-    setState(() {
-      _favoriteMeals.add(meal);
-    });
-    _showInfoMessage('Marked as favorite!');
   }
 
   void _setScreen(String identifier) async {
@@ -93,7 +69,6 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     });
 
     Widget activePage = CategoriesScreen(
-      _toggleMealFavoriteStatus,
       availableMeals: availableMeals.toList(),
     );
 
@@ -102,8 +77,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     if (_selectedPageIndex == 1) {
       final favoriteMeals = ref.watch(favoriteMealsProvider);
       activePage = MealsScreen(
-        meals: _favoriteMeals.toList(),
-        onToggleFavorite: _toggleMealFavoriteStatus,
+        meals: favoriteMeals.toList(),
       );
       activePageTile = 'Your Favorites';
     }
