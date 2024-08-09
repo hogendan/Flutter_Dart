@@ -10,12 +10,26 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-  void _addItem() {
-    Navigator.of(context).push(
+  final List<GroceryItem> _groceryItems = [];
+
+  void _addItem() async {
+    final newItem = await Navigator.of(context).push<GroceryItem>(
       MaterialPageRoute(
         builder: (ctx) => const NewItem(),
       ),
     );
+
+    if (newItem == null) return;
+
+    setState(() {
+      _groceryItems.add(newItem);
+    });
+  }
+
+  void _removeItem(GroceryItem item) {
+    setState(() {
+      _groceryItems.remove(item);
+    });
   }
 
   @override
