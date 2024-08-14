@@ -36,6 +36,14 @@ class _GroceryListState extends State<GroceryList> {
       });
     }
 
+    // firebase が 'null' を返すので、それで判断している
+    if (response.body == 'null') {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     final Map<String, dynamic> listData = json
         .decode(response.body); // Map<String, Map<String, dynamic>> だと実行時エラーになる
     final List<GroceryItem> loadItems = [];
