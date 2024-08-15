@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:favorite_places/model/place.dart';
 import 'package:favorite_places/providers/places_notifier.dart';
 import 'package:favorite_places/widgets/image_input.dart';
@@ -19,6 +21,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     String placeName = '';
+    File? selectedImage;
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +47,11 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                ImageInput(),
+                ImageInput(
+                  onPickImage: (image) {
+                    selectedImage = image;
+                  },
+                ),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -57,7 +64,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                       onPressed: () {
                         _formKey.currentState!.save();
                         ref.read(placesProvider.notifier).addPlace(
-                              Place(title: placeName),
+                              Place(title: placeName, image: selectedImage),
                             );
                         Navigator.of(context).pop();
                       },
