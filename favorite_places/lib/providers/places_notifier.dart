@@ -5,9 +5,7 @@ class PlacesNotifier extends StateNotifier<List<Place>> {
   PlacesNotifier() : super([]);
 
   void addPlace(Place place) {
-    print('place: ${place.title}');
     state = [...state, place];
-    print(state.length);
   }
 }
 
