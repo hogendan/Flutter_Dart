@@ -26,14 +26,17 @@ class _LocationInputState extends State<LocationInput> {
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
+        print('GPS service not enabled');
         return;
       }
     }
 
     permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
+      print('PermissionStatus.denied');
       permissionGranted = await location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
+        print('PermissionStatus not granted');
         return;
       }
     }
@@ -54,7 +57,6 @@ class _LocationInputState extends State<LocationInput> {
 
   @override
   Widget build(BuildContext context) {
-    print('*** fired ***');
     Widget previewContent = Text(
       'No location chosen',
       textAlign: TextAlign.center,
