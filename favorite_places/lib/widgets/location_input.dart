@@ -45,7 +45,16 @@ class _LocationInputState extends State<LocationInput> {
       _isGettingLocation = true;
     });
 
-    locationData = await location.getLocation();
+    locationData = await location.getLocation().timeout(
+          const Duration(seconds: 3),
+          onTimeout: () => LocationData.fromMap({
+            'latitude': 35.658584,
+            'longitude': 139.7454316,
+          }),
+        );
+
+    print('*** locationData: ${locationData.longitude}');
+    print('*** locationData: ${locationData.latitude}');
 
     setState(() {
       _isGettingLocation = false;
