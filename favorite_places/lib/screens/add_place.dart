@@ -23,6 +23,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   Widget build(BuildContext context) {
     String placeName = '';
     File? selectedImage;
+    PlaceLocation? selectedLocation;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +55,9 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                LocationInput(),
+                LocationInput(onSelectLocation: (location) {
+                  selectedLocation = location;
+                }),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -67,7 +70,11 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                       onPressed: () {
                         _formKey.currentState!.save();
                         ref.read(placesProvider.notifier).addPlace(
-                              Place(title: placeName, image: selectedImage),
+                              Place(
+                                title: placeName,
+                                image: selectedImage,
+                                location: selectedLocation!,
+                              ),
                             );
                         Navigator.of(context).pop();
                       },

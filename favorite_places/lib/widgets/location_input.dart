@@ -1,9 +1,17 @@
+import 'dart:js_interop';
+
+import 'package:favorite_places/model/place.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:location/location.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({super.key});
+  const LocationInput({
+    super.key,
+    required this.onSelectLocation,
+  });
+
+  final void Function(PlaceLocation) onSelectLocation;
 
   @override
   State<LocationInput> createState() {
@@ -12,7 +20,7 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
-  Location? _pickedLocation;
+  PlaceLocation? _pickedLocation;
   var _isGettingLocation = false;
 
   void _getCurrentLocation() async {
@@ -20,7 +28,7 @@ class _LocationInputState extends State<LocationInput> {
 
     bool serviceEnabled;
     PermissionStatus permissionGranted;
-    LocationData locationData;
+    late LocationData locationData;
     serviceEnabled = await location.serviceEnabled();
 
     if (!serviceEnabled) {
@@ -58,10 +66,14 @@ class _LocationInputState extends State<LocationInput> {
 
     setState(() {
       _isGettingLocation = false;
+      _pickedLocation = PlaceLocation(
+        latitude: locationData.latitude!,
+        longitude: locationData.longitude!,
+        address: 'Tokyo Tower',
+      );
     });
 
-    print(locationData.latitude);
-    print(locationData.longitude);
+    widget.onSelectLocation(_pickedLocation!);
   }
 
   @override
