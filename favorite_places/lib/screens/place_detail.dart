@@ -25,6 +25,21 @@ class PlaceDetail extends StatelessWidget {
               width: double.infinity,
               height: double.infinity,
             ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              alignment: Alignment.center,
+              child: Text(
+                place.location.address,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(color: Theme.of(context).colorScheme.onSurface),
+              ),
+            ),
+          ),
         ],
       ),
     );
