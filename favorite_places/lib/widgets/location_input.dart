@@ -67,7 +67,7 @@ class _LocationInputState extends State<LocationInput> {
       _pickedLocation = PlaceLocation(
         latitude: locationData.latitude!,
         longitude: locationData.longitude!,
-        address: 'Tokyo Tower',
+        address: '東京都港区芝公園４丁目２−８',
       );
     });
 
