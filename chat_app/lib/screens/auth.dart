@@ -11,7 +11,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _form = GlobalKey<FormState>();
-  var _isLogin = false;
+  var _isLoginMode = false;
   var _enteredEmail = '';
   var _enteredPassword = '';
 
@@ -94,15 +94,15 @@ class _AuthScreenState extends State<AuthScreen> {
                                   .colorScheme
                                   .primaryContainer,
                             ),
-                            child: Text(_isLogin ? 'Login' : 'Signup'),
+                            child: Text(_isLoginMode ? 'Login' : 'Signup'),
                           ),
                           TextButton(
                             onPressed: () {
                               setState(() {
-                                _isLogin = !_isLogin;
+                                _isLoginMode = !_isLoginMode;
                               });
                             },
-                            child: Text(_isLogin
+                            child: Text(_isLoginMode
                                 ? 'Create an account'
                                 : 'I already have an account.'),
                           ),
