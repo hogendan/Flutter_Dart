@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'flutter-chat-app-f14ca.appspot.com',
     iosBundleId: 'com.example.chatApp',
   );
+
 }
