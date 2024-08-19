@@ -5,8 +5,23 @@ import 'package:favorite_places/widgets/place_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlacesScreen extends ConsumerWidget {
+class PlacesScreen extends ConsumerStatefulWidget {
   const PlacesScreen({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _PlaceScreenState();
+  }
+}
+
+class _PlaceScreenState extends ConsumerState<PlacesScreen> {
+  late Future<void> _placesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _placesFuture = ref.read(placesProvider.notifier).loadPlaces();
+  }
 
   void _addItem(BuildContext context) async {
     await Navigator.of(context).push<Place>(
@@ -17,7 +32,7 @@ class PlacesScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final placeList = ref.watch(placesProvider);
 
     return Scaffold(
@@ -32,8 +47,14 @@ class PlacesScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: PlaceList(
-        places: placeList,
+      body: FutureBuilder(
+        future: _placesFuture,
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? const Center(child: CircularProgressIndicator())
+                : PlaceList(
+                    places: placeList,
+                  ),
       ),
     );
   }
