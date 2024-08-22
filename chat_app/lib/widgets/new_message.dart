@@ -26,6 +26,10 @@ class _NewMessageState extends State<NewMessage> {
       return;
     }
 
+    // キーボードを閉じる
+    FocusScope.of(context).unfocus();
+    _messageController.clear();
+
     // 認証されていないユーザーはここまで到達できないので null はない。
     final user = FirebaseAuth.instance.currentUser!;
 
@@ -42,8 +46,6 @@ class _NewMessageState extends State<NewMessage> {
       'usrname': userData.data()!['username'],
       'userImage': userData.data()!['image_url'],
     });
-
-    _messageController.clear();
   }
 
   @override
