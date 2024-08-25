@@ -41,18 +41,13 @@ class ChatMessages extends StatelessWidget {
           itemCount: loadedMessages.length,
           itemBuilder: (ctx, index) {
             final chatMessage = loadedMessages[index].data();
-            print('chatMessage: $chatMessage');
             final nextChatMessage = index + 1 < loadedMessages.length
                 ? loadedMessages[index + 1].data()
                 : null;
-            print('nextChatMessage: $nextChatMessage');
             final currentMessageUserId = chatMessage['userId'];
-            print('currentMessageUserId: $currentMessageUserId');
             final nextMessageUserId =
                 nextChatMessage != null ? nextChatMessage['userId'] : null;
-            print('nextMessageUserId: $nextMessageUserId');
             final nextUserIsSame = nextMessageUserId == currentMessageUserId;
-            print('nextUserIsSame: $nextUserIsSame');
 
             if (nextUserIsSame) {
               return MessageBubble.next(
